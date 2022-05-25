@@ -1,52 +1,38 @@
 <template>
   <div class="cards-container">
-    <div class="card">
-      <a href="http://localhost:8080/1">
-        <div class="image-holder">
-          <img alt="Vue logo" src="../assets/cat.jpg" />
-        </div>
+    <router-link :to="{ name: 'quiz', params: { id: '123' } }">
+      <card-component :image="'/image/cat.jpg'">
         <h2>Quiz</h2>
-      </a>
-    </div>
-    <div class="card">
-      <a href="http://localhost:8080/1">
-        <div class="image-holder">
-          <img alt="Vue logo" src="../assets/cat.jpg" />
-        </div>
+      </card-component>
+    </router-link>
+    <router-link :to="{ name: 'quiz', params: { id: '123' } }">
+      <card-component :image="'/image/cat.jpg'">
         <h2>Quiz</h2>
-      </a>
-    </div>
-    <div class="card">
-      <a href="http://localhost:8080/1">
-        <div class="image-holder">
-          <img alt="Vue logo" src="../assets/cat.jpg" />
-        </div>
+      </card-component>
+    </router-link>
+    <router-link :to="{ name: 'quiz', params: { id: '123' } }">
+      <card-component :image="'/image/cat.jpg'">
         <h2>Quiz</h2>
-      </a>
-    </div>
-    <div class="card">
-      <a href="http://localhost:8080/1">
-        <div class="image-holder">
-          <img alt="Vue logo" src="../assets/cat.jpg" />
-        </div>
+      </card-component>
+    </router-link>
+    <router-link :to="{ name: 'quiz', params: { id: '123' } }">
+      <card-component :image="'/image/cat.jpg'">
         <h2>Quiz</h2>
-      </a>
-    </div>
-    <div class="card">
-      <a href="http://localhost:8080/1">
-        <div class="image-holder">
-          <img alt="Vue logo" src="../assets/cat.jpg" />
-        </div>
+      </card-component>
+    </router-link>
+    <router-link :to="{ name: 'quiz', params: { id: '123' } }">
+      <card-component :image="'/image/cat.jpg'">
         <h2>Quiz</h2>
-      </a>
-    </div>
+      </card-component>
+    </router-link>
   </div>
 </template>
 <style lang="less">
+@import "../styles/variables.less";
 body {
   padding: 0;
   margin: 0;
-  background-color: #e8e8e8;
+  background-color: @body-color;
 }
 a {
   text-decoration: none;
@@ -54,6 +40,9 @@ a {
 .cards-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  // grid: repeat(2, 60px) / auto-flow 80px;
+  // grid: repeat(2, 1fr) / auto-flow 1fr;
+
   grid-gap: 2.5rem;
   padding: 2rem;
   .card {
@@ -77,7 +66,9 @@ a {
 </style>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import CardComponent from "@/components/CardComponent.vue";
 
-export default defineComponent({});
+export default {
+  components: { CardComponent },
+};
 </script>

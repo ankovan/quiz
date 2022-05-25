@@ -1,18 +1,25 @@
 <template>
   <nav>
-    <router-link
-      v-for="breadcrumb in crumbs"
-      :key="breadcrumb"
-      :to="breadcrumb.to"
-      >{{ breadcrumb.path }} /
-    </router-link>
+    <div>
+      <router-link
+        v-for="breadcrumb in crumbs"
+        :key="breadcrumb"
+        :to="breadcrumb.to"
+        >{{ breadcrumb.path }} /
+      </router-link>
+    </div>
+    <registration-component />
   </nav>
   <router-view />
 </template>
 
 <script>
 import { useRoute } from "vue-router";
+import RegistrationComponent from "@/components/RegistrationComponent.vue";
 export default {
+  components: {
+    RegistrationComponent,
+  },
   computed: {
     crumbs: () => {
       const route = useRoute();
@@ -36,6 +43,7 @@ export default {
 </script>
 
 <style lang="less">
+@import "styles/variables.less";
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -45,6 +53,9 @@ export default {
 }
 
 nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.8rem;
   a {
     font-weight: bold;
     color: #000000;
