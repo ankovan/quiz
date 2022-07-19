@@ -34,9 +34,6 @@ body {
   margin: 0;
   background-color: @body-color;
 }
-a {
-  text-decoration: none;
-}
 .cards-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -45,6 +42,10 @@ a {
 
   grid-gap: 2.5rem;
   padding: 2rem;
+  a {
+    text-decoration: none;
+    color: black;
+  }
   .card {
     text-align: center;
     background-color: rgb(255, 255, 255);
@@ -65,10 +66,6 @@ a {
 }
 </style>
 
-<script lang="ts">
+<script lang="ts" setup>
 import CardComponent from "@/components/CardComponent.vue";
-
-export default {
-  components: { CardComponent },
-};
 </script>

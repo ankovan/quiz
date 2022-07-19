@@ -13,33 +13,38 @@
   <router-view />
 </template>
 
-<script>
+<script setup>
 import { useRoute } from "vue-router";
+import { computed, onMounted } from "vue";
+import { useUserStore } from "@/composables/store/useUserStore";
 import RegistrationComponent from "@/components/RegistrationComponent.vue";
-export default {
-  components: {
-    RegistrationComponent,
-  },
-  computed: {
-    crumbs: () => {
-      const route = useRoute();
-      let pathArray = route.path.split("/");
-      pathArray.shift();
-      let breadcrumbs = pathArray.reduce((breadcrumbArray, path, idx) => {
-        if (path) {
-          breadcrumbArray.push({
-            path: path,
-            to: breadcrumbArray[idx - 1]
-              ? "/" + breadcrumbArray[idx - 1].path + "/" + path
-              : "/" + path,
-          });
-        }
-        return breadcrumbArray;
-      }, []);
-      return [{ path: "home", to: "/" }, ...breadcrumbs];
-    },
-  },
-};
+
+onMounted(async () => {
+  const store = useUserStore();
+  try {
+    await store.init();
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+const crumbs = computed(() => {
+  const route = useRoute();
+  let pathArray = route.path.split("/");
+  pathArray.shift();
+  let breadcrumbs = pathArray.reduce((breadcrumbArray, path, idx) => {
+    if (path) {
+      breadcrumbArray.push({
+        path: path,
+        to: breadcrumbArray[idx - 1]
+          ? "/" + breadcrumbArray[idx - 1].path + "/" + path
+          : "/" + path,
+      });
+    }
+    return breadcrumbArray;
+  }, []);
+  return [{ path: "home", to: "/" }, ...breadcrumbs];
+});
 </script>
 
 <style lang="less">

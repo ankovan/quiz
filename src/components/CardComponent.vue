@@ -1,11 +1,9 @@
 <template>
   <div class="card" :class="hoverable ? 'hoverable' : ''">
-    <a :href="link">
-      <div class="image-holder">
-        <img alt="Vue logo" :src="image" />
-      </div>
-      <slot></slot>
-    </a>
+    <div class="image-holder">
+      <img alt="Vue logo" :src="image" />
+    </div>
+    <slot></slot>
   </div>
 </template>
 <style lang="less">

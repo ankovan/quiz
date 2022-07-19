@@ -54,7 +54,7 @@ body {
 }
 .quiz-wrapper {
   width: 100%;
-  height: 100%;
+  height: calc(100% - 5rem);
   align-items: center;
   .center-horisontal();
   .quiz {
@@ -87,66 +87,60 @@ body {
   }
 }
 </style>
-<script>
+<script setup>
+import { ref, onMounted } from "vue";
 import CardComponent from "@/components/CardComponent.vue";
-export default {
-  components: { CardComponent },
-  data() {
-    return {
-      questions: [
-        {
-          question: "What is Vue.js?",
-          answers: [
-            {
-              text: "Programming language",
-              class: "answer",
-            },
-            { text: "Framework", class: "answer" },
-          ],
-          correctAnswer: 1,
-        },
-        {
-          question: "What color is Vue.js logo?",
-          answers: [
-            { text: "Green", class: "answer" },
-            { text: "Blue", class: "answer" },
-          ],
-          correctAnswer: 0,
-        },
-      ],
-      currentQuestionIndex: 0,
-      currentQuestion: {},
-      score: 0,
-      isEnded: false,
-      isDisabled: false,
-    };
+const questions = [
+  {
+    question: "What is Vue.js?",
+    answers: [
+      {
+        text: "Programming language",
+        class: "answer",
+      },
+      { text: "Framework", class: "answer" },
+    ],
+    correctAnswer: 1,
   },
-  mounted() {
-    this.currentQuestion = this.questions[this.currentQuestionIndex];
+  {
+    question: "What color is Vue.js logo?",
+    answers: [
+      { text: "Green", class: "answer" },
+      { text: "Blue", class: "answer" },
+    ],
+    correctAnswer: 0,
   },
-  methods: {
-    checkAnswer(answerIndex) {
-      this.isDisabled = true;
-      if (answerIndex == this.currentQuestion.correctAnswer) {
-        this.score++;
-        this.currentQuestion.answers[answerIndex].class = "right";
-      } else {
-        this.currentQuestion.answers[answerIndex].class = "wrong";
-      }
-      setTimeout(() => {
-        this.getNextQuestion();
-      }, 500);
-    },
-    getNextQuestion() {
-      console.log(this.currentQuestionIndex);
-      if (this.questions[this.currentQuestionIndex + 1] == undefined) {
-        this.isEnded = true;
-      } else {
-        this.isDisabled = false;
-        this.currentQuestionIndex++;
-        this.currentQuestion = this.questions[this.currentQuestionIndex];
-      }
-    },
-  },
+];
+const currentQuestionIndex = ref(0);
+const currentQuestion = ref({});
+const score = ref(0);
+const isEnded = ref(false);
+const isDisabled = ref(false);
+
+onMounted(() => {
+  currentQuestion.value = questions[currentQuestionIndex.value];
+});
+
+const checkAnswer = (answerIndex) => {
+  isDisabled.value = true;
+  if (answerIndex == currentQuestion.value.correctAnswer) {
+    score.value++;
+    currentQuestion.value.answers[answerIndex].class = "right";
+  } else {
+    currentQuestion.value.answers[answerIndex].class = "wrong";
+  }
+  setTimeout(() => {
+    getNextQuestion();
+  }, 500);
+};
+
+const getNextQuestion = () => {
+  if (questions[currentQuestionIndex.value + 1] == undefined) {
+    isEnded.value = true;
+  } else {
+    isDisabled.value = false;
+    currentQuestionIndex.value++;
+    currentQuestion.value = questions[currentQuestionIndex.value];
+  }
 };
 </script>
