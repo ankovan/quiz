@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkquiz"]=self["webpackChunkquiz"]||[]).push([[591],{3591:function(n,u,e){e.r(u),e.d(u,{default:function(){return a}});var r=e(3396);function t(n,u){return(0,r.wg)(),(0,r.iD)("div",null,"test")}var i=e(89);const c={},s=(0,i.Z)(c,[["render",t]]);var a=s}}]);
+//# sourceMappingURL=591.dc104edc.js.map
