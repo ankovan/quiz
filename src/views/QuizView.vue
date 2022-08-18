@@ -5,31 +5,36 @@
         <div class="image-holder">
           <img alt="Vue logo" src="../assets/cat.jpg" />
         </div> -->
-      <card-component :image="'/image/cat.jpg'">
-        <div class="question-wrapper" v-show="!isEnded">
-          <div class="counter">
-            {{ currentQuestionIndex + 1 }} / {{ questions.length }}
-          </div>
-          <h3 class="question">{{ currentQuestion.question }}</h3>
-          <div
-            v-for="(answer, index) in currentQuestion.answers"
-            class="answers-wrapper"
-            :key="answer"
-          >
-            <label
-              @click.prevent="checkAnswer(index)"
-              class="answers button"
-              :disabled="isDisabled"
-              :class="answer.class"
+      <card-component>
+        <template #image>
+          <img alt="cat" :src="'/image/cat.jpg'" />
+        </template>
+        <template #default>
+          <div class="question-wrapper" v-show="!isEnded">
+            <div class="counter">
+              {{ currentQuestionIndex + 1 }} / {{ questions.length }}
+            </div>
+            <h3 class="question">{{ currentQuestion.question }}</h3>
+            <div
+              v-for="(answer, index) in currentQuestion.answers"
+              class="answers-wrapper"
+              :key="answer"
             >
-              <input hidden type="radio" name="answer" />
-              {{ answer.text }}
-            </label>
+              <label
+                @click.prevent="checkAnswer(index)"
+                class="answers button"
+                :disabled="isDisabled"
+                :class="answer.class"
+              >
+                <input hidden type="radio" name="answer" />
+                {{ answer.text }}
+              </label>
+            </div>
           </div>
-        </div>
-        <div v-show="isEnded">
-          <p class="score">You got {{ score }} / {{ questions.length }}</p>
-        </div>
+          <div v-show="isEnded">
+            <p class="score">You got {{ score }} / {{ questions.length }}</p>
+          </div></template
+        >
         <!-- </div> -->
       </card-component>
     </div>
@@ -54,7 +59,7 @@ body {
 }
 .quiz-wrapper {
   width: 100%;
-  height: calc(100% - 5rem);
+  height: calc(100% - 8rem);
   align-items: center;
   .center-horisontal();
   .quiz {

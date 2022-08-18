@@ -1,7 +1,13 @@
 <template>
   <div class="user-menu">
     <details v-if="store.refreshToken != ''" @mouseleave="closeMenu" ref="menu">
-      <summary class="sign-up-button">{{ store.email }}</summary>
+      <summary class="sign-up-button">
+        <div class="user-avatar">
+          <img alt="cat" v-if="store.avatar" :src="store.avatar" />
+          <img alt="cat" v-else src="/image/cat.jpg" />
+        </div>
+        <div>{{ store.email }}</div>
+      </summary>
       <div class="menu-options">
         <div class="options-item" @click="logOut()">Log out</div>
         <div class="options-item" @click="$router.push('/quizmaker')">
@@ -213,14 +219,22 @@ details > summary {
 }
 .sign-up-button {
   .button-style();
-  padding: 1rem;
+  padding: 0.6rem;
   border-radius: @rounded;
+  display: flex;
+  align-items: center;
   // &:hover {
   //   background-color: @button-color-right;
   //   color: white;
   // }
   .icon {
     font-size: 1.2rem;
+  }
+  .user-avatar img {
+    border-radius: 50%;
+    height: 3rem;
+    width: 3rem;
+    margin-right: 0.2rem;
   }
 }
 .modal {

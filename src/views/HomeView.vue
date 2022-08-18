@@ -1,28 +1,20 @@
 <template>
   <div class="cards-container">
-    <router-link :to="{ name: 'quiz', params: { id: '123' } }">
-      <card-component :image="'/image/cat.jpg'">
-        <h2>Quiz</h2>
-      </card-component>
-    </router-link>
-    <router-link :to="{ name: 'quiz', params: { id: '123' } }">
-      <card-component :image="'/image/cat.jpg'">
-        <h2>Quiz</h2>
-      </card-component>
-    </router-link>
-    <router-link :to="{ name: 'quiz', params: { id: '123' } }">
-      <card-component :image="'/image/cat.jpg'">
-        <h2>Quiz</h2>
-      </card-component>
-    </router-link>
-    <router-link :to="{ name: 'quiz', params: { id: '123' } }">
-      <card-component :image="'/image/cat.jpg'">
-        <h2>Quiz</h2>
-      </card-component>
-    </router-link>
-    <router-link :to="{ name: 'quiz', params: { id: '123' } }">
-      <card-component :image="'/image/cat.jpg'">
-        <h2>Quiz</h2>
+    <router-link
+      v-for="quiz in quizes"
+      :key="quiz.id"
+      :to="{
+        name: 'quiz',
+        params: { id: quiz.id },
+      }"
+    >
+      <card-component>
+        <template #image>
+          <img alt="cat" :src="quiz.image" />
+        </template>
+        <template #default>
+          <h2>{{ quiz.name }}</h2>
+        </template>
       </card-component>
     </router-link>
   </div>
@@ -68,4 +60,20 @@ body {
 
 <script lang="ts" setup>
 import CardComponent from "@/components/CardComponent.vue";
+const quizes = [
+  { id: "123", image: "/image/cat.jpg", name: "Quiz" },
+  { id: "123", image: "/image/cat.jpg", name: "Quiz" },
+  { id: "123", image: "/image/cat.jpg", name: "Quiz" },
+  { id: "123", image: "/image/cat.jpg", name: "Quiz" },
+  { id: "123", image: "/image/cat.jpg", name: "Quiz" },
+  { id: "123", image: "/image/cat.jpg", name: "Quiz" },
+  { id: "123", image: "/image/cat.jpg", name: "Quiz" },
+  { id: "123", image: "/image/cat.jpg", name: "Quiz" },
+  { id: "123", image: "/image/cat.jpg", name: "Quiz" },
+  { id: "123", image: "/image/cat.jpg", name: "Quiz" },
+  { id: "123", image: "/image/cat.jpg", name: "Quiz" },
+  { id: "123", image: "/image/cat.jpg", name: "Quiz" },
+  { id: "123", image: "/image/cat.jpg", name: "Quiz" },
+  { id: "123", image: "/image/cat.jpg", name: "Quiz" },
+];
 </script>

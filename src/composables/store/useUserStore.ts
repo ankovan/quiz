@@ -17,6 +17,7 @@ export const useUserStore = defineStore("user", {
       hasPassword: true,
       token: "",
       refreshToken: window.localStorage.getItem("refreshToken") || "",
+      avatar: "",
     };
   },
   actions: {
@@ -28,6 +29,7 @@ export const useUserStore = defineStore("user", {
           password: password,
         }
       );
+      this.avatar = data.data.data.user.avatar;
       this.role = data.data.data.user.role;
       this.gender = data.data.data.user.gender;
       this.isPremium = data.data.data.user.isPremium;
@@ -46,6 +48,7 @@ export const useUserStore = defineStore("user", {
         email: email,
         password: password,
       });
+      this.avatar = data.data.data.user.avatar;
       this.role = data.data.data.user.role;
       this.gender = data.data.data.user.gender;
       this.isPremium = data.data.data.user.isPremium;
@@ -68,6 +71,7 @@ export const useUserStore = defineStore("user", {
             refreshToken,
           }
         );
+        this.avatar = data.data.data.user.avatar;
         this.role = data.data.data.user.role;
         this.gender = data.data.data.user.gender;
         this.isPremium = data.data.data.user.isPremium;
@@ -84,6 +88,7 @@ export const useUserStore = defineStore("user", {
     },
     async logout() {
       window.localStorage.removeItem("refreshToken");
+      this.avatar = "";
       this.role = "user";
       this.gender = "other";
       this.isPremium = false;

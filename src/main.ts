@@ -9,9 +9,7 @@ import { far } from "@fortawesome/free-regular-svg-icons";
 import * as Vue from "vue"; // in Vue 3
 import axios from "axios";
 import VueAxios from "vue-axios";
-
 import { createPinia } from "pinia";
-
 const pinia = createPinia();
 
 library.add(fas, far);
