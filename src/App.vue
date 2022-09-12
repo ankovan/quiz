@@ -15,11 +15,11 @@
 
 <script setup>
 import { useRoute } from "vue-router";
-import { computed, onMounted } from "vue";
+import { computed, onBeforeMount } from "vue";
 import { useUserStore } from "@/composables/store/useUserStore";
 import RegistrationComponent from "@/components/RegistrationComponent.vue";
 
-onMounted(async () => {
+onBeforeMount(async () => {
   const store = useUserStore();
   try {
     await store.init();

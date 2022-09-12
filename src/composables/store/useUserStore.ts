@@ -21,9 +21,32 @@ export const useUserStore = defineStore("user", {
     };
   },
   actions: {
-    async signup(email: string, password: string) {
+    async signup(email: string, password: string, username: string) {
       const data = await axios.post(
-        "http://127.0.0.1:3000/api/v1/auth/signup",
+        `${process.env.VUE_APP_API_URL}/api/v1/auth/signup`,
+        {
+          email: email,
+          password: password,
+          username: username,
+        }
+      );
+      this.avatar = data.data.data.user.avatar;
+      this.role = data.data.data.user.role;
+      this.gender = data.data.data.user.gender;
+      this.isPremium = data.data.data.user.isPremium;
+      this.email = data.data.data.user.email;
+      this.username = data.data.data.user.username;
+      this.createdAt = data.data.data.user.createdAt;
+      this.updatedAt = data.data.data.user.updatedAt;
+      this.id = data.data.data.user.id;
+      this.hasPassword = data.data.data.user.hasPassword;
+      this.token = data.data.data.token;
+      this.refreshToken = data.data.data.refreshToken;
+      window.localStorage.setItem("refreshToken", this.refreshToken || "");
+    },
+    async signin(email: string, password: string) {
+      const data = await axios.post(
+        `${process.env.VUE_APP_API_URL}/api/v1/auth/login`,
         {
           email: email,
           password: password,
@@ -43,30 +66,11 @@ export const useUserStore = defineStore("user", {
       this.refreshToken = data.data.data.refreshToken;
       window.localStorage.setItem("refreshToken", this.refreshToken || "");
     },
-    async signin(email: string, password: string) {
-      const data = await axios.post("http://127.0.0.1:3000/api/v1/auth/login", {
-        email: email,
-        password: password,
-      });
-      this.avatar = data.data.data.user.avatar;
-      this.role = data.data.data.user.role;
-      this.gender = data.data.data.user.gender;
-      this.isPremium = data.data.data.user.isPremium;
-      this.email = data.data.data.user.email;
-      this.username = data.data.data.user.username;
-      this.createdAt = data.data.data.user.createdAt;
-      this.updatedAt = data.data.data.user.updatedAt;
-      this.id = data.data.data.user.id;
-      this.hasPassword = data.data.data.user.hasPassword;
-      this.token = data.data.data.token;
-      this.refreshToken = data.data.data.refreshToken;
-      window.localStorage.setItem("refreshToken", this.refreshToken || "");
-    },
     async init() {
       const refreshToken = window.localStorage.getItem("refreshToken") || "";
       if (refreshToken !== "") {
         const data = await axios.post(
-          "http://127.0.0.1:3000/api/v1/auth/refresh-token",
+          `${process.env.VUE_APP_API_URL}/api/v1/auth/refresh-token`,
           {
             refreshToken,
           }

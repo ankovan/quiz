@@ -6,12 +6,15 @@
           <img alt="cat" v-if="store.avatar" :src="store.avatar" />
           <img alt="cat" v-else src="/image/cat.jpg" />
         </div>
-        <div>{{ store.email }}</div>
+        <div>{{ store.username }}</div>
       </summary>
       <div class="menu-options">
         <div class="options-item" @click="logOut()">Log out</div>
         <div class="options-item" @click="$router.push('/quizmaker')">
           Make a quiz
+        </div>
+        <div class="options-item" @click="$router.push('/myquizes')">
+          My quizes
         </div>
       </div>
     </details>
@@ -38,6 +41,16 @@
             </button>
           </div>
           <div class="tab" v-if="tab === 'signup'">
+            <div class="form-control">
+              <label for="username">Username:</label>
+              <input
+                v-model="username"
+                type="text"
+                id="username"
+                required
+                name="username"
+              />
+            </div>
             <div class="form-control">
               <label for="email">Email:</label>
               <input
@@ -126,6 +139,7 @@ import { ref } from "vue";
 import { useUserStore } from "@/composables/store/useUserStore";
 const isModalOpened = ref(false);
 const tab = ref("signup");
+const username = ref("");
 const email = ref("");
 const password = ref("");
 const confirmPassword = ref("");
@@ -139,7 +153,7 @@ const signUp = async () => {
     return;
   }
   try {
-    await store.signup(email.value, password.value);
+    await store.signup(email.value, password.value, username.value);
   } catch (error) {
     console.error(error);
     alerterror.value = error.response.data.error;
@@ -272,13 +286,18 @@ details > summary {
         margin-top: 0.3rem;
         .form-button {
           .button-style();
+          background-color: @button-color-right;
+          color: white;
           &:hover {
-            background-color: @button-color-right;
-            color: white;
+            background-color: darken(@button-color, 15%);
+            color: black;
           }
-          &.wrong:hover {
+          &.wrong {
             background-color: @button-color-wrong;
-            color: white;
+            &:hover {
+              background-color: darken(@button-color, 15%);
+              color: black;
+            }
           }
         }
       }

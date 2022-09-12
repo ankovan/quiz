@@ -7,12 +7,15 @@
         </div> -->
       <card-component>
         <template #image>
-          <img alt="cat" :src="'/image/cat.jpg'" />
+          <img
+            alt="cat"
+            :src="isStartCard ? quiz.image : currentQuestion.image"
+          />
         </template>
         <template #default>
-          <div class="question-wrapper" v-show="!isEnded">
+          <div class="question-wrapper" v-show="!isEnded && !isStartCard">
             <div class="counter">
-              {{ currentQuestionIndex + 1 }} / {{ questions.length }}
+              {{ currentQuestionIndex + 1 }} / {{ quiz.questions.length }}
             </div>
             <h3 class="question">{{ currentQuestion.question }}</h3>
             <div
@@ -32,9 +35,18 @@
             </div>
           </div>
           <div v-show="isEnded">
-            <p class="score">You got {{ score }} / {{ questions.length }}</p>
-          </div></template
-        >
+            <p class="score">
+              You got {{ score }} / {{ quiz.questions.length }}
+            </p>
+          </div>
+          <div v-show="isStartCard">
+            <div class="start-card-content">
+              <h2 class="start-card-text">{{ quiz.name }}</h2>
+              <p class="start-card-text">{{ quiz.description }}</p>
+              <button @click="isStartCard = false">Start</button>
+            </div>
+          </div>
+        </template>
         <!-- </div> -->
       </card-component>
     </div>
@@ -70,6 +82,23 @@ body {
     .question-wrapper {
       padding: 1rem;
     }
+    .start-card-content {
+      .center-horisontal();
+      flex-direction: column;
+      button {
+        .button-style();
+        background-color: @button-color-right;
+        color: white;
+        &:hover {
+          background-color: darken(@button-color, 15%);
+          color: black;
+        }
+      }
+      .start-card-text {
+        margin: 0;
+        margin-bottom: 0.8rem;
+      }
+    }
     .button {
       background-color: @button-color;
       border-radius: 0.2rem;
@@ -92,38 +121,25 @@ body {
   }
 }
 </style>
-<script setup>
-import { ref, onMounted } from "vue";
+<script setup lang="ts">
+import { Ref, ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { useGuard } from "@/composables/useGuard";
 import CardComponent from "@/components/CardComponent.vue";
-const questions = [
-  {
-    question: "What is Vue.js?",
-    answers: [
-      {
-        text: "Programming language",
-        class: "answer",
-      },
-      { text: "Framework", class: "answer" },
-    ],
-    correctAnswer: 1,
-  },
-  {
-    question: "What color is Vue.js logo?",
-    answers: [
-      { text: "Green", class: "answer" },
-      { text: "Blue", class: "answer" },
-    ],
-    correctAnswer: 0,
-  },
-];
+import { Quiz } from "@/types/quiz.interfaces";
+import axios from "axios";
+const onGuard = useGuard();
 const currentQuestionIndex = ref(0);
 const currentQuestion = ref({});
 const score = ref(0);
 const isEnded = ref(false);
 const isDisabled = ref(false);
+const route = useRoute();
+const quiz: Ref<Quiz> = ref({ questions: [] });
+const isStartCard = ref(true);
 
 onMounted(() => {
-  currentQuestion.value = questions[currentQuestionIndex.value];
+  fetchQuiz();
 });
 
 const checkAnswer = (answerIndex) => {
@@ -140,12 +156,24 @@ const checkAnswer = (answerIndex) => {
 };
 
 const getNextQuestion = () => {
-  if (questions[currentQuestionIndex.value + 1] == undefined) {
+  if (quiz.value.questions[currentQuestionIndex.value + 1] == undefined) {
     isEnded.value = true;
   } else {
     isDisabled.value = false;
     currentQuestionIndex.value++;
-    currentQuestion.value = questions[currentQuestionIndex.value];
+    currentQuestion.value = quiz.value.questions[currentQuestionIndex.value];
+  }
+};
+const fetchQuiz = async () => {
+  try {
+    const response = await axios.get(
+      `${process.env.VUE_APP_API_URL}/api/v1/quiz/${route.params.id}`
+    );
+    quiz.value = response.data.data;
+    console.log(response.data.data); // TODO: set image
+    currentQuestion.value = quiz.value.questions[currentQuestionIndex.value];
+  } catch (error) {
+    console.log(error);
   }
 };
 </script>

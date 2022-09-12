@@ -20,6 +20,16 @@ const routes: Array<RouteRecordRaw> = [
     name: "quizmaker",
     component: () => import("../views/QuizMaker.vue"),
   },
+  {
+    path: "/myquizes",
+    name: "myquizes",
+    component: () => import("../views/UserQuizes.vue"),
+  },
+  {
+    path: "/myquizes/:id",
+    name: "editmyquiz",
+    component: () => import("../views/QuizMaker.vue"),
+  },
 ];
 
 const router = createRouter({

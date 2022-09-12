@@ -25,7 +25,7 @@
   .image-holder {
     img {
       width: 100%;
-      height: 15rem;
+      height: 20rem;
       object-fit: cover;
     }
   }

@@ -8,7 +8,7 @@
       v-for="quiz in quizes"
       :key="quiz._id"
       :to="{
-        name: 'quiz',
+        name: 'editmyquiz',
         params: { id: quiz._id },
       }"
     >
@@ -17,7 +17,7 @@
           <img alt="image" :src="quiz.image" />
         </template>
         <template #default>
-          <h2 class="card-name">{{ quiz.name }}</h2>
+          <h2>{{ quiz.name }}</h2>
           <p class="description">{{ quiz.description }}</p>
         </template>
       </card-component>
@@ -38,8 +38,6 @@ body {
   flex-direction: column;
   h1 {
     color: @button-color-right;
-    font-size: 2.5rem;
-    margin: 0.5rem;
   }
   p {
     font-size: 1.2rem;
@@ -59,10 +57,6 @@ body {
   }
   .description {
     margin: 0;
-  }
-  .card-name {
-    margin: 0;
-    margin-bottom: 0.5rem;
   }
   .card {
     text-align: center;
@@ -88,9 +82,11 @@ body {
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useUserStore } from "@/composables/store/useUserStore";
+import { useGuard } from "@/composables/useGuard";
 import CardComponent from "@/components/CardComponent.vue";
 
 const store = useUserStore();
+const onGuard = useGuard();
 const quizes = ref([]);
 const total = ref(0);
 const limit = ref(25);
@@ -98,13 +94,14 @@ const page = ref(1);
 const pages = ref(1);
 
 onMounted(() => {
-  fetchQuizes();
+  onGuard(fetchQuizes);
 });
 
 const fetchQuizes = async () => {
   try {
     const response = await axios.get(
-      `${process.env.VUE_APP_API_URL}/api/v1/quiz`
+      `${process.env.VUE_APP_API_URL}/api/v1/quiz/myquizes`,
+      { headers: { authorization: `Bearer ${store.token}` } }
     );
     quizes.value = response.data.data;
     total.value = response.data.total;
